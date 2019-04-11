@@ -27,6 +27,7 @@ uint64_t os::nanos_asleep() noexcept {
 extern kernel::ctor_t __stdout_ctors_start;
 extern kernel::ctor_t __stdout_ctors_end;
 
+//extern "C" void vm_exit();
 
 void kernel::start(uint64_t fdt_addr) // boot_magic, uint32_t boot_addr)
 {
@@ -38,6 +39,8 @@ void kernel::start(uint64_t fdt_addr) // boot_magic, uint32_t boot_addr)
   }
 
   kernel::run_ctors(&__stdout_ctors_start, &__stdout_ctors_end);
+
+  //TODO init paging
 
   // Print a fancy header
   CAPTION("#include<os> // Literally");
@@ -62,14 +65,22 @@ void os::halt() noexcept{
   PER_CPU(os_per_cpu).cycles_hlt += os::Arch::cpu_cycles() - cycles_before;
 
 }
-
+/*
+void os::shutdown() noexcept
+{
+  vm_exit();
+  //TODO check that this is sane on ARM
+//  while (1) asm("hlt #0xf000;");
+  __builtin_unreachable();
+}
+*/
 void os::event_loop()
 {
   Events::get(0).process_events();
-  do {
+  while (kernel::is_running()) {
     os::halt();
     Events::get(0).process_events();
-  } while (kernel::is_running());
+  }
 
   MYINFO("Stopping service");
   Service::stop();

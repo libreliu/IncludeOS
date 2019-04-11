@@ -48,7 +48,11 @@ void cpu_wfi();
 void cpu_disable_exceptions(uint32_t irq);
 void cpu_enable_exceptions(uint32_t irq);
 
-uint32_t cpu_get_current_el();
+void cpu_set_exception_handler();
+void cpu_enable_fp_simd();
+
+void cpu_change_el(uint8_t el);
+uint32_t cpu_current_el();
 void cpu_print_current_el();
 
 char *get_tpidr();

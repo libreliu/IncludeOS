@@ -18,6 +18,7 @@ extern "C" {
 
 #include "exception_handling.hpp"
 #include "gic.h"
+#include "mini_uart.h"
 
 extern "C" void noop_eoi() {}
 extern "C" void cpu_sampling_irq_handler() {}
@@ -38,27 +39,31 @@ namespace kernel {
 
 void __platform_init(uint64_t fdt_addr)
 {
-  //printf("printf os start\r\n");
+  kprintf("PLATFORM INIT\r\n");
   //belongs in platform ?
   const char *fdt=(const char *)fdt_addr;
-  printf("fdt addr %zx\r\n",fdt_addr);
+  kprintf("fdt addr %zx\r\n",fdt_addr);
   //checks both magic and version
   if ( fdt_check_header(fdt) != 0 )
   {
-    printf("FDT Header check failed\r\n");
+    kprintf("FDT Header check failed\r\n");
     return;
   }
   const int intc = fdt_path_offset(fdt, "/intc");
 
   if (intc < 0) //interrupt controller not found in fdt.. should never happen..
   {
-    printf("interrupt controller not found in dtb\r\n");
+    kprintf("interrupt controller not found in dtb\r\n");
     return;
   }
   if (fdt_node_check_compatible(fdt,intc,"arm,cortex-a15-gic") == 0)
   {
-    printf("init gic\r\n");
+    kprintf("init gic\r\n");
     gic_init_fdt(fdt,intc);
+  }
+  else
+  {
+    kprintf("incompatible gic\r\n");
   }
 
   Events::get(0).init_local();
@@ -159,7 +164,9 @@ timespec __arch_wall_clock() noexcept {
 // default to serial
 void kernel::default_stdout(const char* str, const size_t len)
 {
-  __serial_print(str, len);
+  //on rpi3 use this instead..
+  __mini_uart_print(str,len);
+  //__serial_print(str, len);
 }
 
 void __arch_reboot()

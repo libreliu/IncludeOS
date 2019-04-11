@@ -12,7 +12,7 @@ set(PLATFORM_OBJECTS
 )
 
 SET(PLATFORM_SOURCES
-  serial1.cpp
+
   platform.cpp
   kernel_start.cpp
   os.cpp
@@ -21,6 +21,8 @@ SET(PLATFORM_SOURCES
   init_libc.cpp
   sanity_checks.cpp
   smp.cpp
+  mini_uart.cpp
+  #serial1.cpp
 )
 
 #add the arch in include path..
