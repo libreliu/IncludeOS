@@ -21,8 +21,18 @@ SET(PLATFORM_SOURCES
   init_libc.cpp
   sanity_checks.cpp
   smp.cpp
-  mini_uart.cpp
   #serial1.cpp
+
+  #generic this should be outside platform and arch
+  fdt.cpp
+
+  #RPI stuff
+  mini_uart.cpp
+  bcm2835_gpio.cpp
+  bcm2835_rng.cpp
+  bcm2836_irq.cpp
+  bcm2835_timer.cpp
+  bcm2836_local_irq.cpp
 )
 
 #add the arch in include path..

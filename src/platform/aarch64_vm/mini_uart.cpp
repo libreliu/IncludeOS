@@ -99,10 +99,12 @@ void kprint(const char* c)
 
 void kprintf(const char *format, ...)
 {
-  char buf[8192];
+
+  char mini_uart_buffer[8096];
   va_list aptr;
   va_start(aptr, format);
-  vsnprintf(buf, sizeof(buf), format, aptr);
-  __mini_uart_print1(buf);
+  //vsnprintf(mini_uart_buffer, 4096, format, aptr);
+  size_t len = vsnprintf(mini_uart_buffer, sizeof(mini_uart_buffer), format, aptr);
+  __mini_uart_print(mini_uart_buffer,len);
   va_end(aptr);
 }

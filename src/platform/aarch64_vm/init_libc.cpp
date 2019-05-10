@@ -13,7 +13,7 @@
 
 #define KERN_DEBUG 1
 #ifdef KERN_DEBUG
-#define PRATTLE(fmt, ...) kprintf(fmt, ##__VA_ARGS__)
+#define PRATTLE(fmt, ...) kprintf(fmt, ##__VA_ARGS__) //kprintf(fmt, ##__VA_ARGS__)
 #else
 #define PRATTLE(fmt, ...) /* fmt */
 #endif
@@ -26,6 +26,7 @@ extern char _SSP_INIT_;
 static uint64_t fdt_addr;
 
 static volatile int global_ctors_ok = 0;
+
 __attribute__((constructor))
 static void global_ctor_test(){
   global_ctors_ok = 42;
@@ -36,9 +37,16 @@ int kernel_main(int, char * *, char * *)
 {
   PRATTLE("<kernel_main> libc initialization complete \n");
   LL_ASSERT(global_ctors_ok == 42);
+  //why does this affect printout?
   kernel::state().libc_initialized = true;
 
   Elf_binary<Elf64> elf{{(char*)&_ELF_START_, &_ELF_END_ - &_ELF_START_}};
+/*
+  if (elf.is_ELF())
+  {
+    printf("ELF_HEADER_INTACT\n");
+  }
+  */
   LL_ASSERT(elf.is_ELF() && "ELF header intact");
 
   PRATTLE("<kernel_main> OS start \n");

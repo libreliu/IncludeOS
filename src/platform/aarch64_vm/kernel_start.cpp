@@ -2,59 +2,12 @@
 #include <kprint>
 
 #include <cstdint>
-uintptr_t _multiboot_free_begin(uintptr_t boot_addr);
-uintptr_t _multiboot_memory_end(uintptr_t boot_addr);
+#include "debug.hpp"
+//uintptr_t _multiboot_free_begin(uintptr_t boot_addr);
+//uintptr_t _multiboot_memory_end(uintptr_t boot_addr);
 extern bool os_default_stdout;
 
-extern "C"
-uint8_t nibble2hex(uint8_t nibble)
-{
-  nibble=nibble&0xF;
-  switch(nibble)
-  {
-    case 0x00: return '0';
-    case 0x01: return '1';
-    case 0x02: return '2';
-    case 0x03: return '3';
-    case 0x04: return '4';
-    case 0x05: return '5';
-    case 0x06: return '6';
-    case 0x07: return '7';
-    case 0x08: return '8';
-    case 0x09: return '9';
-    case 0x0A: return 'A';
-    case 0x0B: return 'B';
-    case 0x0C: return 'C';
-    case 0x0D: return 'D';
-    case 0x0E: return 'E';
-    case 0x0F: return 'F';
-    default: return 0x00; // unreachable
-  }
-  //unreachable
-}
 
-extern "C"
-void print_memory(const char *name,const char * mem,int size)
-{
-  kprint(name);
-  kprint(":\n");
-  int i;
-  for (i=0;i<size;i++)
-  {
-    *((volatile unsigned int *) 0x09000000) =nibble2hex(mem[i]>>4);
-    *((volatile unsigned int *) 0x09000000) =nibble2hex(mem[i]);
-    if (((i+1)%4)==0)
-    {
-      kprint(" ");
-    }
-    if (((i+1)%16)==0)
-    {
-      kprint("\n");
-    }
-
-  }
-  kprint("\n");
-}
 
 void print_le(const char *mem,int size)
 {
@@ -111,6 +64,8 @@ extern "C" {
 
 #include "init_libc.hpp"
 #include <cpu.h>
+#include <paging_regs.hpp>
+
 
 extern "C" {
   void __init_sanity_checks();
@@ -154,13 +109,116 @@ void large_stack_alloc(uint8_t magic)
     kprint("Large done\n");
 }
 
+
+/*
+void print_characters(char *loc, int count)
+{
+  printf(" | ");
+  for (int i=0;i<count;i++)
+  {
+    if (isprint(loc[i]))
+    {
+      printf("%c",loc[i]);
+    }
+    else
+    {
+      printf(".");
+    }
+  }
+  printf(" |\n");
+}
+*/
+
+
+//__attribute__((no_sanitize("all")))
+
+
 extern "C"
 //__attribute__((no_sanitize("all")))
 void kernel_start(uintptr_t magic, uintptr_t addrin)
 {
 
-  print_le_named32("magic",(char*)&magic);
+  print_le_named64("magic",(char*)&magic);
+  print_le_named64("addrin",(char*)&addrin);
   //make sure we allways start at the beginnning of a new line!
+
+  //print_paging_capabs();
+
+  uint64_t _tbbr0=ttbr0();
+  uint64_t _tcr=tcr();
+  print_le_named64("ttbr0",(char*)&_tbbr0);
+  print_le_named64("tcr",(char*)&_tcr);
+  //while(1);
+  kprintf("ttbr0 %016zx\n",ttbr0());
+
+  kprintf("paging_capabs %016zx\n",paging_capabs());
+  print_paging_capabs();
+
+  kprintf("ttbcr %08x\n",ttbcr());
+  kprintf("tcr %08x\n",tcr());
+
+  //while(1);
+  uint64_t *page_table=(uint64_t *)_tbbr0;
+
+  uint64_t *page_table1=nullptr;
+  uint64_t *page_table2=nullptr;
+  uint64_t *page_table3=nullptr;
+
+
+#if defined PRINT_PAGE
+  int i=0;
+  //if entry is 1 its valid
+  int level=0;
+  while(*page_table&0x1)
+  {
+    //if entry is 3 its a new page table ?
+    if (((*page_table)&0x3) == 0x3)
+    {
+      page_table1=(uint64_t *)(((uint64_t)*page_table)&(~0x3));
+      kprintf("Level1 %zx \n",page_table1);
+      while((*page_table1)&0x1)
+      {
+        if ((*page_table1&0x3) == 0x3)
+        {
+          page_table2=(uint64_t *)(((uint64_t)*page_table1)&(~0x3));
+          kprintf("Level2 %zx \n",page_table2);
+
+          while(*page_table2&0x1)
+          {
+            /*if (*page_table2&0x3 == 0x3)
+            {
+
+              page_table3=(uint64_t *)(((uint64_t)*page_table2)&(~0x3));
+              kprintf("Level3 %zx \n",page_table3);
+
+              while(*page_table3&0x1)
+              {
+                kprintf("Page table3 entry %zx = %zx\n",page_table3,*page_table3);
+                page_table3++;
+              }
+            }
+            else*/
+            {
+              kprintf("Page level2 entry %zx = %zx\n",page_table2,*page_table2);
+            }
+            page_table2++;
+          }
+        }
+        else
+        {
+          kprintf("Page level1 entry %zx = %zx\n",page_table1,*page_table1);
+        }
+        page_table1++;
+      }
+    }
+    else
+    {
+      kprintf("Page level0 entry %zx = %zx\n",page_table,*page_table);
+    }
+    page_table++;
+  }
+#endif
+
   kprint("\r\n");
   print_sp();
   large_stack_alloc((uint8_t)magic);
@@ -171,52 +229,36 @@ void kernel_start(uintptr_t magic, uintptr_t addrin)
   print_le_named32("currentEL",(char*)&el);
 
 
-  float a=magic*0.24;
-  float b=addrin*1.25;
-
-  float c=a+b;
-  //kprintf("what is this %s\r\n","i dont know");
-  //print_le_named64("Magic",&magic);
-
-
-
-  //cpu_print_current_el();
-  //return;
-/*  while(cpu_current_el() > 1)
-  {
-    kprint("change EL\r\n");
-    //kprintf("dropping down to el %d",cpu_current_el()-1);
-    cpu_change_el(1);
-  }
-*/
-  if (c == 0.0)
-  {
-    kprint("float is nil\r\n");
-  }
-
-  print_le_named32("float",(char*)&c);
-
-
   //  kprint("KERNEL START\r\n");
 //  kprint("enable exception handler\r\n");
 //  cpu_set_exception_handler();
 //  kprint("enable fpu/simd\r\n");
-//  cpu_enable_fp_simd();
-  kprint("Sanity ? \r\n");
+  //cpu_enable_fp_simd();
   __init_sanity_checks();
   kprint("Sanity_done\r\n");
-  for(int i=0;i<10;i++)
-  {
-    kprint("Hello\r\n");
-  }
+
   kprint("Print EL\r\n");
-  //cpu_print_current_el();
+  cpu_print_current_el();
   kprint("Print EL done\r\n");
   //while(1);
 
   //kprintf("Magic %zx addrin %zx\n",magic,addrin);
+  uint64_t fdt_addr;//=0x40000000; //in qemu
+  if ( fdt_check_header((char*)magic) != 0 )
+  {
+    kprint("FDT Header check failed at provided addr\r\n");
+    //fdt_addr=0x40000000; //in qemu se if provided ?
+    fdt_addr=0x7fc02e0;//also in pi..
 
-
+    //
+    // uint64_t fdt_addr=0x7fc02e0;//also in pi.. double check for magic
+    //return;
+  }
+  else
+  {
+    kprint("FDT magic found in provided magic\n");
+    fdt_addr=magic;
+  }
 
   //its a "RAM address 0"
   const struct fdt_property *prop;
@@ -226,7 +268,8 @@ void kernel_start(uintptr_t magic, uintptr_t addrin)
   //TODO find this somewhere ?.. although it is at memory 0x00
   //uint64_t fdt_addr=0x40000000; //in qemu
   //uint64_t fdt_addr=0x100; //in u-boot on pi
-  uint64_t fdt_addr=0x7fc02e0;//also in pi..
+//  uint64_t fdt_addr=0x7fc02e0;//also in pi..
+//  uint64_t fdt_addr=0x8000000;
   char *fdt=(char*)fdt_addr;
 
 
@@ -282,6 +325,7 @@ void kernel_start(uintptr_t magic, uintptr_t addrin)
 
   print_le_named64("free_mem_begin",(char *)&free_mem_begin);
   kprint("move symbols\r\n");
+
     //ok now its sane
   free_mem_begin += _move_symbols(free_mem_begin);
 
@@ -307,10 +351,10 @@ void kernel_start(uintptr_t magic, uintptr_t addrin)
 
   kprint("init all interrupts \r\n");
   //probably not very sane!
-  cpu_debug_enable();
+  /*cpu_debug_enable();
   cpu_fiq_enable();
   cpu_irq_enable();
-  cpu_serror_enable();
+  cpu_serror_enable();*/
   kprint("init libc \r\n");
   aarch64::init_libc((uintptr_t)fdt_addr);
 

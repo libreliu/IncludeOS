@@ -4,13 +4,18 @@ ENTRY(_start)
  * TODO sort out memory location. which is platform specific..
  * + 0x40000000 to elf start for aarch64 vm..
  * + 0x02000000 to elf start for rpi3.. ? unsure.. in u-boot..
+ * + 0x8000 is rpi3 outside u-boot
+ * bare bare metal!!
+ * 32-bit kernels are loaded to address 0x8000 by default, and 64-bit kernels to address 0x80000.
 **/
 SECTIONS
 {
   /* PROVIDE ( _ELF_START_ = . + 0x200000 + 0x40000000); */
   PROVIDE ( _ELF_START_ = . + 0x200000 + 0x20000000);
   PROVIDE ( _LOAD_START_ = _ELF_START_); /* For convenience w. multiboot */
-  __stack_top = _ELF_START_ -16;
+  __boot_magic = (_ELF_START_ - 16);
+  __exception_stack = (__boot_magic - 16);
+  __stack_top = (__exception_stack - 4096);
 
   . = _ELF_START_ + SIZEOF_HEADERS;
 

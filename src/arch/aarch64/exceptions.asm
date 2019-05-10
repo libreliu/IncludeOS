@@ -15,9 +15,10 @@
 .endm
 
 .macro unhandled_exception
+.align 7 //start at 80 byte alignement
   stp x29,x30, [sp, #-16]!
   bl exception_enter
-  b exception_unhandled
+  bl exception_unhandled
   b exception_return
 .endm
 
@@ -44,8 +45,9 @@ VBAR_ELn
 
 //2k alignement needed for vector
 //TODO register one for each execution level ?
-.align 11 //2^11 = 2048
+//.align 11 //2^11 = 2048 2k boundary in accordance with spec
 .section .text.exception_table
+.balign 0x800 //this needs to go after the section declaration!!!!
 exception_vector:
   //SP0 Not really tested yet
   exception_handler exception_handler_syn_el
