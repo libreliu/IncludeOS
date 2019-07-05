@@ -64,6 +64,12 @@ reset:
         msr     cptr_el2, x0                    /* Enable FP/SIMD */
         b       0f
 1:      /* msr     vbar_el1, x0 */
+
+        /* DISABLE ALIGNMENT CHECK, see P2025 on ARMv8a manual */
+        mrs     x0, sctlr_el1
+        ldr     x1, =0xfffffffd
+        and     x0, x0, x1
+        msr     sctlr_el1, x0
         mov     x0, #3 << 20
         msr     cpacr_el1, x0                   /* Enable FP/SIMD */
 0:

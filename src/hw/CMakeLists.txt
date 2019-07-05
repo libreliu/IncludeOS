@@ -8,6 +8,7 @@ set(SRCS
     msi.cpp
     pci_msi.cpp
     usernet.cpp
+    gpio.cpp
   )
 
 

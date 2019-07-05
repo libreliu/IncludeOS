@@ -3,7 +3,9 @@
 #include <stdarg.h>
 
 //static const uint16_t port = 0x3F8; // Serial 1
-static int initialized __attribute__((section(".data"))) = 0x0;
+// no need, since I've cleared in my ELF bootloader
+// static int initialized __attribute__((section(".data"))) = 0x0;
+static int initialized = 0x0;
 
 static const uint32_t UART_BASE=0x09000000;
 
