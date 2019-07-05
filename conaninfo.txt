@@ -1,0 +1,49 @@
+[settings]
+    arch=armv8
+    build_type=Release
+    compiler=gcc
+    compiler.version=8
+    os=Linux
+
+[requires]
+    GSL/2.Y.Z
+    libcxx/7.Y.Z
+    libfdt/1.Y.Z
+    libgcc/1.Y.Z
+
+[options]
+    platform=default
+    smp=False
+
+[full_settings]
+    arch=armv8
+    build_type=Release
+    compiler=gcc
+    compiler.version=8
+    os=Linux
+
+[full_requires]
+    GSL/2.0.0@includeos/stable:5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9
+    libcxx/7.0.1@includeos/stable:4680b3386fce626bbd782cd807fa700f3de361fa
+    libcxxabi/7.0.1@includeos/stable:a38d7c31d4564d43a7705539d94b1907c6418a85
+    libfdt/1.4.7@includeos/stable:c3cd523f63cc051ff1178d8c88ede55d315cf9be
+    libgcc/1.0@includeos/stable:a38d7c31d4564d43a7705539d94b1907c6418a85
+    libunwind/7.0.1@includeos/stable:c3cd523f63cc051ff1178d8c88ede55d315cf9be
+    musl/1.1.18@includeos/stable:d5bf95d2a20952225177c123a6a3da87fec0744b
+
+[full_options]
+    platform=default
+    smp=False
+    libcxx:shared=False
+    libcxx:threads=True
+    libcxxabi:shared=False
+    libunwind:shared=False
+
+[recipe_hash]
+
+
+[env]
+    CC=aarch64-linux-gnu-gcc
+    CFLAGS=-mcpu=cortex-a53 -O2 -g
+    CXX=aarch64-linux-gnu-g++
+    CXXFLAGS=-mcpu=cortex-a53 -O2 -g

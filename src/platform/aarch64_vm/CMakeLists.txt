@@ -1,5 +1,5 @@
 
-set(LIB_NAME aarch64_${PLATFORM})
+set(LIB_NAME aarch64_pc)
 
 set(PLATFORM_OBJECTS
 
@@ -18,6 +18,8 @@ SET(PLATFORM_SOURCES
   exception_handling.cpp
   init_libc.cpp
   sanity_checks.cpp
+  uart.c
+  mbox.c
 )
 
 #add the arch in include path..

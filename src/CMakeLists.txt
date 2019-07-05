@@ -25,10 +25,9 @@ set(LIBRARIES
     hal
     kernel
     util
-    net
-    fs
+#    net
+#    fs
     posix
-    virtio
     hw
 )
 
@@ -81,11 +80,7 @@ endif()
 #
 set(CMAKE_INSTALL_MESSAGE LAZY) # to avoid spam
 install(TARGETS os DESTINATION lib)
-if (NOT CMAKE_TESTING_ENABLED)
-  configure_file(memdisk/empty.asm ${CMAKE_BINARY_DIR}/tools/memdisk/empty.asm)
-  configure_file(memdisk/memdisk.asm ${CMAKE_BINARY_DIR}/tools/memdisk/memdisk.asm)
-  configure_file(memdisk/memdisk.py ${CMAKE_BINARY_DIR}/tools/memdisk/memdisk.py)
-endif()
+
 #TODO build ?
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/memdisk/ DESTINATION tools/memdisk
         FILES_MATCHING PATTERN "*.*")

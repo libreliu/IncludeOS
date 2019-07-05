@@ -172,7 +172,7 @@ void kernel_start(uintptr_t magic, uintptr_t addrin)
   int proplen;
 
   //TODO find this somewhere ?.. although it is at memory 0x00
-  uint64_t fdt_addr=0x40000000;
+  uint64_t fdt_addr=0x8000000;
   char *fdt=(char*)fdt_addr;
 
 

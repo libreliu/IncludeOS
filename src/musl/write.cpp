@@ -1,6 +1,6 @@
 #include <os>
 #include "common.hpp"
-#include <posix/fd_map.hpp>
+// #include <posix/fd_map.hpp>
 
 // The actual syscall
 static long sys_write(int fd, char* str, size_t len) {
@@ -11,8 +11,8 @@ static long sys_write(int fd, char* str, size_t len) {
     return len;
   }
 
-  if(auto* fildes = FD_map::_get(fd); fildes)
-    return fildes->write(str, len);
+  // if(auto* fildes = FD_map::_get(fd); fildes)
+  //   return fildes->write(str, len);
 
   return -EBADF;
 }

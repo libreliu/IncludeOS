@@ -3,29 +3,6 @@
 #
 
 # make LiveUpdate visible to plugins
-include_directories(${CMAKE_SOURCE_DIR}/lib/LiveUpdate/include)
-set(PLUGIN_SRCS
-  system_log.cpp
-  syslogd.cpp
-  unik.cpp
-  example.cpp
-  autoconf.cpp
-  nacl.cpp
-  madness/madness.cpp
-)
-
-if (NOT ${PLATFORM} STREQUAL "nano")
-  list(APPEND PLUGIN_SRCS
-    vfs.cpp
-    terminal.cpp
-    syslog.cpp
-
-  )
-  #handle the more complex ones
-  add_library(terminal_liu STATIC terminal.cpp)
-  set_target_properties(terminal_liu PROPERTIES COMPILE_FLAGS "-DUSE_LIVEUPDATE")
-  
-endif()
 
 set(PLUGINS "")
 foreach(PLUGIN ${PLUGIN_SRCS})

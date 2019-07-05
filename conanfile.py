@@ -44,7 +44,7 @@ class IncludeOSConan(ConanFile):
         if self.settings.arch == "armv8":
             self.requires("libfdt/1.4.7@includeos/stable")
 
-        if not self.options.platform == 'nano':
+        if not (self.options.platform == 'nano' or self.settings.arch == 'armv8'):
             self.requires("rapidjson/1.1.0@includeos/stable")
             self.requires("http-parser/2.8.1@includeos/stable")
             self.requires("uzlib/v2.1.1@includeos/stable")

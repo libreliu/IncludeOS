@@ -1,0 +1,35 @@
+{
+ "profile": "[settings]\narch=armv8\narch_build=x86_64\nbuild_type=Release\ncompiler=gcc\ncompiler.libcxx=libstdc++11\ncompiler.version=8\nos=Linux\nos_build=Linux\n[options]\n[build_requires]\n*: binutils/2.31@includeos/toolchain\n[env]\nCC=aarch64-linux-gnu-gcc\nCFLAGS=-mcpu=cortex-a53 -O2 -g\nCXX=aarch64-linux-gnu-g++\nCXXFLAGS=-mcpu=cortex-a53 -O2 -g",
+ "options": [
+  [
+   "platform",
+   "default"
+  ],
+  [
+   "smp",
+   "False"
+  ],
+  [
+   "libcxx:shared",
+   "False"
+  ],
+  [
+   "libcxx:threads",
+   "True"
+  ],
+  [
+   "libcxxabi:shared",
+   "False"
+  ],
+  [
+   "libunwind:shared",
+   "False"
+  ]
+ ],
+ "root": {
+  "name": null,
+  "version": null,
+  "user": null,
+  "channel": null
+ }
+}

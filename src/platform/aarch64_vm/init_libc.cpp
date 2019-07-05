@@ -69,6 +69,17 @@ int kernel_main(int, char * *, char * *)
   return 0;
 }
 
+extern "C" void (*const __init_array_start)(void), (*const __init_array_end)(void);
+
+// My patched init
+extern "C" void patched_init() {
+  // _init(); Only if we have it, but we don't
+
+  uintptr_t a = (uintptr_t)&__init_array_start;
+  for (; a<(uintptr_t)&__init_array_end; a+=sizeof(void(*)()))
+  	(*(void (**)(void))a)();
+}
+
 namespace aarch64
 {
   // Musl entry
@@ -169,5 +180,10 @@ namespace aarch64
     // GDB_ENTRY;
     PRATTLE("* Starting libc initialization\n");
     __libc_start_main(kernel_main, argc, argv.data());
+
+    // // Since TLS is having problems, I've patched out libc initialization.
+    // patched_init();
+
+    // kernel_main(0, 0, 0);
   }
 }

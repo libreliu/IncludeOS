@@ -10,17 +10,12 @@ set(SRCS
     profile.cpp
     syscalls.cpp
     service_stub.cpp
-    #scoped_profiler.cpp
-#    elf.cpp
-  #  fiber.cpp
-#    profile.cpp
     terminal.cpp
     timers.cpp
     rng.cpp
     tls.cpp
     vga.cpp
     context.cpp
-    #context_asm.asm
     )
 if (NOT CMAKE_TESTING_ENABLED)
   list(APPEND SRCS
@@ -30,13 +25,6 @@ if (NOT CMAKE_TESTING_ENABLED)
     liveupdate.cpp
     rtc.cpp
     system_log.cpp
-  )
-endif()
-
-if("${ARCH}" STREQUAL "x86_64" OR "${ARCH}" STREQUAL "i686")
-  list(APPEND SRCS
-    context_asm.asm
-    scoped_profiler.cpp
   )
 endif()
 
