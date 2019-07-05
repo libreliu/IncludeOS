@@ -64,21 +64,13 @@ int kernel_main(int, char * *, char * *)
   kernel::post_start();
 
   PRATTLE("<kernel_main> os_event_loop \n");
+
   // Starting event loop from here allows us to profile OS::start
   os::event_loop();
   return 0;
 }
 
 extern "C" void (*const __init_array_start)(void), (*const __init_array_end)(void);
-
-// My patched init
-extern "C" void patched_init() {
-  // _init(); Only if we have it, but we don't
-
-  uintptr_t a = (uintptr_t)&__init_array_start;
-  for (; a<(uintptr_t)&__init_array_end; a+=sizeof(void(*)()))
-  	(*(void (**)(void))a)();
-}
 
 namespace aarch64
 {

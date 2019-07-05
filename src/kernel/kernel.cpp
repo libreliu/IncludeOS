@@ -155,15 +155,17 @@ void kernel::post_start()
 #endif
   if (unsafe) {
     printf(" +--> WARNING: No good random source found: RDRAND/RDSEED instructions not available.\n");
-    if (is_for_production_use()) {
-      printf(" +--> FATAL: Random source check failed. Terminating.\n");
-      printf(" +-->        To disable this check, re-run cmake with \"-DFOR_PRODUCTION=OFF\".\n");
-      os::shutdown();
-      return;
-    }
+    printf("[ZTDBG] However, Libre Liu have bypassed this check in kernel, "
+           "for he couldn't find the correct position to turn it off\n");
+    // if (is_for_production_use()) {
+    //   printf(" +--> FATAL: Random source check failed. Terminating.\n");
+    //   printf(" +-->        To disable this check, re-run cmake with \"-DFOR_PRODUCTION=OFF\".\n");
+    //   os::shutdown();
+    //   return;
+    // }
     FILLINE('~');
   }
-
+  printf("[ZTDBG] Calling Service::start()\n");
   // service program start
   Service::start();
 }

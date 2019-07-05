@@ -50,6 +50,7 @@ extern int main(int, const char*[]);
 __attribute__((weak))
 void Service::start(const std::string& cmd)
 {
+  printf("Service::start() with arg=%s", cmd.c_str());
   std::string st(cmd); // mangled copy
   int argc = 0;
   const char* argv[ARGS_MAX];
