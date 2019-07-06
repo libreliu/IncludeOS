@@ -19,8 +19,9 @@ typedef struct
 extern volatile unsigned char _binary__home_includeos_includeos_src_hw_font_psf_start;
 
 int x, y;
-unsigned int width, height, pitch;
 // pitch is the nubmer of bytes in each row.
+unsigned pitch;
+unsigned int width, height;
 char *framebuffer;
 
 #define DEPTH 32
