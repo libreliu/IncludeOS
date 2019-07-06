@@ -30,6 +30,12 @@ namespace hw
 
 			/* Read the current level of input pin. */
 			int gpio_read_level(const __uint8_t pin);
+
+			/* Get the time. */
+			__uint32_t gpio_timer(void);
+			
+			/* Delay count. */
+			int gpio_delay(int count);
 	};
 };
 

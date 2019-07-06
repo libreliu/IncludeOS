@@ -104,3 +104,24 @@ int hw::GPIO::gpio_read_level(const __uint8_t pin)
     __uint32_t value = read_peri(paddr);
     return (value & (1 << shift)) ? HIGH : LOW;
 }
+
+__uint32_t hw::GPIO::gpio_timer(void)
+{
+    volatile __uint32_t *timer_addr = (volatile __uint32_t *)0x3F003004;
+    __uint32_t curr_time = read_peri(timer_addr);
+    return curr_time;
+}
+
+int hw::GPIO::gpio_delay(int count)
+{
+    __uint32_t prev_time = gpio_timer();
+    for (;;)
+    {
+        __uint32_t curr_time = gpio_timer();
+        if (curr_time - prev_time >= count)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
