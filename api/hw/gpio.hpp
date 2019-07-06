@@ -1,3 +1,6 @@
+#ifndef GPIO_HPP_INCLUDED // This is different from "GPIO_H_INCLUDED", which is from <arch/aarch64/gpio.h>
+#define GPIO_HPP_INCLUDED
+
 #include <stdio.h>
 
 typedef unsigned int __uint32_t;
@@ -29,26 +32,8 @@ namespace hw
 			int gpio_read_level(const __uint8_t pin);
 	};
 };
-#define GPIO_BASE 0x3F000000
 
-#define GPFSEL0 ((volatile unsigned int)(GPIO_BASE + 0x00200000))
-#define GPFSEL1 ((volatile unsigned int)(GPIO_BASE + 0x00200004))
-#define GPFSEL2 ((volatile unsigned int)(GPIO_BASE + 0x00200008))
-#define GPFSEL3 ((volatile unsigned int)(GPIO_BASE + 0x0020000C))
-#define GPFSEL4 ((volatile unsigned int)(GPIO_BASE + 0x00200010))
-#define GPFSEL5 ((volatile unsigned int)(GPIO_BASE + 0x00200014))
-#define GPSET0 ((volatile unsigned int)(GPIO_BASE + 0x0020001C))
-#define GPSET1 ((volatile unsigned int)(GPIO_BASE + 0x00200020))
-#define GPCLR0 ((volatile unsigned int)(GPIO_BASE + 0x00200028))
-#define GPLEV0 ((volatile unsigned int)(GPIO_BASE + 0x00200034))
-#define GPLEV1 ((volatile unsigned int)(GPIO_BASE + 0x00200038))
-#define GPEDS0 ((volatile unsigned int)(GPIO_BASE + 0x00200040))
-#define GPEDS1 ((volatile unsigned int)(GPIO_BASE + 0x00200044))
-#define GPHEN0 ((volatile unsigned int)(GPIO_BASE + 0x00200064))
-#define GPHEN1 ((volatile unsigned int)(GPIO_BASE + 0x00200068))
-#define GPPUD ((volatile unsigned int)(GPIO_BASE + 0x00200094))
-#define GPPUDCLK0 ((volatile unsigned int)(GPIO_BASE + 0x00200098))
-#define GPPUDCLK1 ((volatile unsigned int)(GPIO_BASE + 0x0020009C))
+#include <arch/aarch64/gpio.h>
 
 #define HIGH 1
 #define LOW 0
@@ -63,3 +48,4 @@ namespace hw
 #define GPIO_FSEL_ALT5 0x02  /*!< Alternate function 5 0b010 */
 #define GPIO_FSEL_MASK 0x07  /*!< Function select bits mask 0b111 */
 
+#endif

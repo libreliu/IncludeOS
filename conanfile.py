@@ -108,7 +108,7 @@ class IncludeOSConan(ConanFile):
             'userspace' : '{}_userspace'.format(self._target_arch())
         }
 
-        self.cpp_info.libs=['os','arch','musl_syscalls']
+        self.cpp_info.libs=['os','arch','musl_syscalls','hw_font']
         self.cpp_info.libs.append(platform.get(str(self.options.platform),"NONE"))
         self.cpp_info.libdirs = [ 'lib', 'platform' ]
 
