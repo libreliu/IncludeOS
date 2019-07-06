@@ -27,8 +27,8 @@
 #include <info>
 #include <common>
 
-//#define FS_PRINT(fmt, ...)  printf(fmt, ##__VA_ARGS__)
-#define FS_PRINT(fmt, ...)  /** **/
+#define FS_PRINT(fmt, ...)  printf(fmt, ##__VA_ARGS__)
+//#define FS_PRINT(fmt, ...)  /** **/
 
 inline std::string trim_right_copy(
    const std::string& s,
@@ -42,6 +42,7 @@ namespace fs
   FAT::FAT(hw::Block_device& dev)
     : device(dev) {
     //
+    FS_PRINT("fs::FAT Constructed\n");
   }
 
   void FAT::init(const void* base_sector) {

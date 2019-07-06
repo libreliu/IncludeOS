@@ -11,6 +11,7 @@ set(ARCH_SOURCES
   cpu.cpp
   timer.cpp
   syscall_entry.cpp
+  delays.c
 )
 enable_language(ASM)
 

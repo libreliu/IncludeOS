@@ -3,7 +3,7 @@
 #include <stdarg.h>
 
 //static const uint16_t port = 0x3F8; // Serial 1
-// no need, since I've cleared in my ELF bootloader
+// no need, since I've cleared .bss in my ELF bootloader
 // static int initialized __attribute__((section(".data"))) = 0x0;
 static int initialized = 0x0;
 

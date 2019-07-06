@@ -26,7 +26,7 @@ set(LIBRARIES
     kernel
     util
 #    net
-#    fs
+    fs
     posix
     hw
 )

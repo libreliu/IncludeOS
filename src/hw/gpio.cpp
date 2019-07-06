@@ -115,9 +115,11 @@ __uint32_t hw::GPIO::gpio_timer(void)
 int hw::GPIO::gpio_delay(int count)
 {
     __uint32_t prev_time = gpio_timer();
+	printf("prev time:%d",prev_time);
     for (;;)
     {
         __uint32_t curr_time = gpio_timer();
+	printf("curr time:%d",curr_time);
         if(curr_time < prev_time)
         {
             return 0;

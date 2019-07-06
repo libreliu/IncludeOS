@@ -10,6 +10,8 @@ set(SRCS
     usernet.cpp
     gpio.cpp
     screen.cpp
+    emmc.cpp
+    sd.c
   )
 add_custom_command(
   OUTPUT binary_font_psf.o
