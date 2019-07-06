@@ -34,7 +34,7 @@ namespace hw
 			/* Get the time. */
 			__uint32_t gpio_timer(void);
 			
-			/* Delay count. */
+			/* Delay count. Return 0 if overflow, return 1 if success. */
 			int gpio_delay(int count);
 	};
 };

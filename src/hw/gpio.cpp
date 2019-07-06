@@ -118,7 +118,11 @@ int hw::GPIO::gpio_delay(int count)
     for (;;)
     {
         __uint32_t curr_time = gpio_timer();
-        if (curr_time - prev_time >= count)
+        if(curr_time < prev_time)
+        {
+            return 0;
+        }
+        else if (curr_time - prev_time >= count)
         {
             return 1;
         }
