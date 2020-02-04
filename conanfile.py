@@ -49,7 +49,10 @@ class IncludeOSConan(ConanFile):
             self.requires("http-parser/2.8.1@includeos/stable")
             self.requires("uzlib/v2.1.1@includeos/stable")
             self.requires("botan/2.8.0@includeos/stable")
-            self.requires("s2n/0.8@includeos/stable")
+
+            # OpenSSL requires compilation options fix, which is temporarily skipped
+            if not self.settings.arch == 'armv8':
+                self.requires("s2n/0.8@includeos/stable")
 
         if self.options.platform == 'solo5-hvt' or self.options.platform == 'solo5-spt':
             if self.settings.compiler != 'gcc' or self.settings.arch == "x86":
