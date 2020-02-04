@@ -1,12 +1,16 @@
 #include "cpu.h"
 #include <kernel/threads.hpp>
+#include <os.hpp>
+#include <common>
+#include <kprint>
+#include <errno.h>
 
 extern "C"
 pthread_t syscall_clone(
         unsigned long flags,
         void *stack,
         int *ptid,
-        unsigned long newtls,
+        void *newtls,
         int *ctid,
         // needed to suspend this thread
         void* next_instr,
