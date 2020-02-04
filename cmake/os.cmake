@@ -2,6 +2,20 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+# AArch64 cross compile requires separate settings
+
+if (DEFINED ENV{LD})
+  SET(CMAKE_LINKER $ENV{LD})
+endif()
+
+if (DEFINED ENV{OBJCOPY})
+  SET(CMAKE_OBJCOPY $ENV{OBJCOPY})
+endif()
+
+if (DEFINED ENV{STRIP})
+  SET(CMAKE_STRIP $ENV{STRIP})
+endif()
+
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
