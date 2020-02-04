@@ -1,5 +1,7 @@
 
-set(LIB_NAME aarch64_${PLATFORM})
+#set(LIB_NAME aarch64_${PLATFORM})
+# to solve linking failure
+set(LIB_NAME aarch64_pc)
 
 set(PLATFORM_OBJECTS
 
