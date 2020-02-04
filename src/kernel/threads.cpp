@@ -1,5 +1,11 @@
 #include <kernel/threads.hpp>
+
+#if defined(ARCH_x86_64) || defined(ARCH_i686)
 #include <arch/x86/cpu.hpp>
+#else
+#warning "Implement me"
+#endif
+
 #include <kprint>
 #include <cassert>
 #include <deque>
@@ -180,7 +186,9 @@ namespace kernel
 # ifdef ARCH_x86_64
     return (void*) x86::CPU::read_msr(IA32_FS_BASE);
 # else
-    #error "Implement me"
+    //#error "Implement me"
+    #warning "Implement me"
+    return nullptr;
 # endif
   }
 

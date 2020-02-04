@@ -45,7 +45,9 @@ namespace kernel
     # elif defined(ARCH_i686)
         asm("movq %%gs:(0x08), %0" : "=r" (thread));
     # else
-        #error "Implement me?"
+        //#error "Implement me?"
+        #warning "Implement me"
+        return 0; // always return the main thread for now
     # endif
     return thread;
   }
