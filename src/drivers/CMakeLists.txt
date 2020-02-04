@@ -27,14 +27,19 @@ set(DRIVER_SRCS
 )
 
 if (${PLATFORM} STREQUAL "default")
-  list(APPEND DRIVER_SRCS
-      vga_emergency.cpp
-    virtiocon.cpp
-    virtioblk.cpp
-    virtionet.cpp
-    vmxnet3.cpp
-    e1000.cpp
-  )
+  # TODO: We might need to separate drivers according to options one day
+  if ("${ARCH}" STREQUAL "i686" OR "${ARCH}" STREQUAL "i386" OR "${ARCH}" STREQUAL "x86_64" )
+    list(APPEND DRIVER_SRCS
+        vga_emergency.cpp
+      virtiocon.cpp
+      virtioblk.cpp
+      virtionet.cpp
+      vmxnet3.cpp
+      e1000.cpp
+    )
+  elseif("${ARCH}" STREQUAL "aarch64")
+    # TODO: IMPLEMENT ME
+  endif()
 elseif (${PLATFORM} STREQUAL "solo5-hvt" OR ${PLATFORM} STREQUAL "solo5-spt")
   list(APPEND DRIVER_SRCS
     solo5blk.cpp
