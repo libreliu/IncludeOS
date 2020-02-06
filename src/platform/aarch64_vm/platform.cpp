@@ -30,6 +30,11 @@ void (*current_eoi_mechanism)() = noop_eoi;
 void (*current_intr_handler)() = nullptr;
 */
 
+#include <util/fixed_vector.hpp>
+
+namespace kernel {
+  Fixed_vector<delegate<void()>, 64> smp_global_init(Fixedvector_Init::UNINIT);
+}
 
 void __platform_init(uint64_t fdt_addr)
 {

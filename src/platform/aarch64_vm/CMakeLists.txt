@@ -20,6 +20,7 @@ SET(PLATFORM_SOURCES
   exception_handling.cpp
   init_libc.cpp
   sanity_checks.cpp
+  smp.cpp
 )
 
 #add the arch in include path..
