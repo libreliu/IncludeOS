@@ -64,7 +64,12 @@ void __platform_init(uint64_t fdt_addr)
     bool intr_enabled = false;
   };
   static std::vector<timer_data> timerdata;
-  SMP_RESIZE_GCTOR(timerdata);
+  SMP_RESIZE_EARLY_GCTOR(timerdata);
+
+  // TODO: Figure out if smp infomation is available at this moment
+  for (auto lambda : kernel::smp_global_init) {
+    lambda();
+  }
 
   #define TIMER_IRQ 27
 
