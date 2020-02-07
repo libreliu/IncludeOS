@@ -5,7 +5,8 @@ ENTRY(_start)
 **/
 SECTIONS
 {
-  PROVIDE ( _ELF_START_ = . + 0x200000 + 0x40000000);
+  /* PROVIDE ( _ELF_START_ = . + 0x200000 + 0x40000000); */
+  PROVIDE ( _ELF_START_ = . + 0x200000 + 0x20000000);
   PROVIDE ( _LOAD_START_ = _ELF_START_); /* For convenience w. multiboot */
   __stack_top = _ELF_START_ -16;
 
