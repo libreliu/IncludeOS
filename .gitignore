@@ -45,6 +45,9 @@ cmake_install.cmake
 #CLion
 .idea/
 
+#VSCode
+.vscode/
+
 # Starbase disk file
 lib/uplink/starbase/disk
 
