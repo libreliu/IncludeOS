@@ -114,9 +114,9 @@ final_start:
   ldr x30, =__stack_top
   mov sp, x30
 //    mrs x0, s3_1_c15_c3_0
-  bl __setup_pagetable
+//  bl __setup_pagetable
   bl register_exception_handler
-  bl enable_fpu_simd
+//  bl enable_fpu_simd
 
   ldr x8, =__boot_magic
   ldr x0, [x8]

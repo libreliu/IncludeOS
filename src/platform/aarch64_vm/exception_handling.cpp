@@ -289,7 +289,7 @@ void exception_unhandled()
 {
   kprint("EXCEPTION\r\n");
 
-  act_led2.clear();
+  //act_led2.clear();
   kprintf("UNHANDLED EXCEPTION\n");
   while(1);
 }
